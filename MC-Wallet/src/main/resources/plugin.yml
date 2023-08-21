@@ -1,0 +1,4 @@
+name: MC-Wallet
+version: 1.0
+main: pl.nehorowo.wallet.WalletPlugin
+author: nehorowo

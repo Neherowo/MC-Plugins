@@ -1,0 +1,5 @@
+main: pl.nehorowo.rtp.RtpPlugin
+name: MC-Rtp
+version: 1.0
+author: nehorowo
+api-version: 1.13

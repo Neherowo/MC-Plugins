@@ -1,0 +1,7 @@
+# Project exclude paths
+/MC-Rtp/target/
+/MC-Tools/target/
+/MC-TreasureMap/target/
+/MC-Vanish/target/
+/MC-Wallet/target/
+/target/

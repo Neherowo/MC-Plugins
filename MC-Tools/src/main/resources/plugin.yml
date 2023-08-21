@@ -1,0 +1,7 @@
+name: MC-Tools
+main: pl.nehorowo.tools.ToolsPlugin
+version: '${project.version}'
+author: nehorowo
+api-version: 1.13
+depend:
+  - DecentHolograms
