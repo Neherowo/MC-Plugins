@@ -10,7 +10,7 @@
 - **[MC-Vanish](https://github.com/Neherowo/MC-Plugins/tree/master/MC-Vanish)**
     - 🌟 Simple vanish plugin for Minecraft
 - **[MC-Wallet](https://github.com/Neherowo/MC-Plugins/tree/master/MC-Wallet)**
-    - Advanced plugin for wallet in GUI - fully configurable.
+    - 🌟 Advanced plugin for wallet in GUI - fully configurable.
 
 ## Supported platforms 🌼
 
@@ -18,7 +18,7 @@
 
 - **SOON! BungeeCord/Waterfall (Minecraft proxy)**
     - 🌟 For some plugins like Wallet and Vanish i want to expand these plugins for bungeecord.
-    - 
+
 
 ## Special thanks🫂
 - 🤗 I want to thank Saidora (Mebrigji) for super MySQL API
