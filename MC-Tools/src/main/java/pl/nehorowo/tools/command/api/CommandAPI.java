@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.configuration.Configuration;
 import pl.nehorowo.tools.configuration.MessageConfiguration;
-import pl.nehorowo.tools.factory.UserFactory;
 import pl.nehorowo.tools.utils.TextUtil;
 
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ public abstract class CommandAPI extends BukkitCommand {
     private final ToolsPlugin instance = ToolsPlugin.getInstance();
     private final Configuration configuration = instance.getConfiguration();
     private final MessageConfiguration messageConfiguration = instance.getMessageConfiguration();
-    private final UserFactory userRepository = instance.getUserFactory();
 
     @SneakyThrows
     public CommandAPI(@NotNull String name, String permission, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {

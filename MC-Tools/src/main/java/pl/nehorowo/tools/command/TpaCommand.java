@@ -8,13 +8,11 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.command.api.CommandAPI;
-import pl.nehorowo.tools.factory.UserFactory;
-import pl.nehorowo.tools.user.User;
+import pl.nehorowo.tools.service.UserService;
 import pl.nehorowo.tools.utils.TextUtil;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TpaCommand extends CommandAPI {
 
@@ -58,25 +56,24 @@ public class TpaCommand extends CommandAPI {
             return;
         }
 
-        User user = getUserRepository().findUser(target.getUniqueId());
-        if(user == null) return;
+        UserService.getInstance().get(player.getUniqueId()).ifPresent(user -> {
+            if(ToolsPlugin.getInstance().getTeleportController().containsTeleport(player) || user.getTpList().contains(player)) {
+                ToolsPlugin.getInstance().getMessageConfiguration()
+                        .getAlreadyTeleported()
+                        .send(player);
+                return;
+            }
 
-        if(ToolsPlugin.getInstance().getTeleportFactory().containsTeleport(player) || user.getTpList().contains(player)) {
-            ToolsPlugin.getInstance().getMessageConfiguration()
-                    .getAlreadyTeleported()
+            ToolsPlugin.getInstance().getMessageConfiguration().getTpaTargetRequest()
+                    .addPlaceholder(ImmutableMultimap.of("[PLAYER]", player.getName()))
+                    .send(target);
+
+            ToolsPlugin.getInstance().getMessageConfiguration().getTpaPlayerRequest()
+                    .addPlaceholder(ImmutableMultimap.of("[PLAYER]", target.getName()))
                     .send(player);
-            return;
-        }
 
-        ToolsPlugin.getInstance().getMessageConfiguration().getTpaTargetRequest()
-                .addPlaceholder(ImmutableMultimap.of("[PLAYER]", player.getName()))
-                .send(target);
-
-        ToolsPlugin.getInstance().getMessageConfiguration().getTpaPlayerRequest()
-                .addPlaceholder(ImmutableMultimap.of("[PLAYER]", target.getName()))
-                .send(player);
-
-        user.getTpList().add(player);
+            user.getTpList().add(player);
+        });
         return;
     }
 

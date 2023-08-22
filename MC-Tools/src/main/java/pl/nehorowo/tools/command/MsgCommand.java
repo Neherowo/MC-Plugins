@@ -8,8 +8,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.command.api.CommandAPI;
-import pl.nehorowo.tools.factory.UserFactory;
-import pl.nehorowo.tools.user.User;
+import pl.nehorowo.tools.service.UserService;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,31 +45,22 @@ public class MsgCommand extends CommandAPI {
         String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
         if(sender instanceof Player player) {
-            User user = getUserRepository().findUser(player.getUniqueId());
-            if(user == null) return;
-
-            user.setLastMsg(target);
-
-            User tUser = getUserRepository().findUser(target.getUniqueId());
-            if(tUser == null) return;
-
-            tUser.setLastMsg(player);
+            UserService.getInstance().get(player.getUniqueId()).ifPresent(user -> user.setLastMsg(player));
+            UserService.getInstance().get(target.getUniqueId()).ifPresent(tUser -> tUser.setLastMsg(player));
         }
 
-
-
-        Bukkit.getOnlinePlayers().stream()
-                .filter(players -> getUserRepository().findUser(players.getUniqueId()) != null)
-                .filter(players -> getUserRepository().findUser(players.getUniqueId()).isSocialSpy())
-                .forEach(users ->
-                        ToolsPlugin.getInstance().getMessageConfiguration().getMsgSpyFormat()
-                                .addPlaceholder(ImmutableMultimap.of(
-                                        "[MESSAGE]", message,
-                                        "[PLAYER]", sender.getName(),
-                                        "[TARGET]", target.getName()
-                                ))
-                                .send(users)
-                );
+        Bukkit.getOnlinePlayers().forEach(players ->
+            UserService.getInstance().get(players.getUniqueId()).ifPresent(user -> {
+            if(user.isSocialSpy()) {
+                ToolsPlugin.getInstance().getMessageConfiguration().getMsgSpyFormat()
+                        .addPlaceholder(ImmutableMultimap.of(
+                                "[MESSAGE]", message,
+                                "[PLAYER]", sender.getName(),
+                                "[TARGET]", target.getName()
+                        ))
+                        .send(players);
+            }
+        }));
 
         ToolsPlugin.getInstance().getMessageConfiguration().getMsgSenderFormat()
                 .addPlaceholder(ImmutableMultimap.of(

@@ -9,13 +9,13 @@ public class Service {
 
     private ItemStack item;
     private int slot;
-    private int prize;
+    private int price;
     private String command;
 
-    public Service(ItemStack item, int slot, int prize, String command) {
+    public Service(ItemStack item, int slot, int price, String command) {
         this.item = item;
         this.slot = slot;
-        this.prize = prize;
+        this.price = price;
         this.command = command;
     }
 }

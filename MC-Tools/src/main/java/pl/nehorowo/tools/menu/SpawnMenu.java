@@ -22,7 +22,7 @@ public class SpawnMenu implements InventoryProvider {
                 .build(),
                 false,
                 e -> {
-                    plugin.getTeleportFactory()
+                    plugin.getTeleportController()
                             .addTeleport(
                                     player,
                                     plugin.getConfiguration().getSpawnLocation()
@@ -42,7 +42,7 @@ public class SpawnMenu implements InventoryProvider {
                 .build()
                 .open(player);
         else {
-            plugin.getTeleportFactory()
+            plugin.getTeleportController()
                     .addTeleport(
                             player,
                             plugin.getConfiguration().getSpawnLocation()

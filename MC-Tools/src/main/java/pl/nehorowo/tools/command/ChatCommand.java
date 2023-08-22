@@ -9,7 +9,7 @@ import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.command.api.CommandAPI;
 import pl.nehorowo.tools.menu.ChatMenu;
 import pl.nehorowo.tools.menu.MessageHistoryMenu;
-import pl.nehorowo.tools.user.User;
+import pl.nehorowo.tools.service.UserService;
 import pl.nehorowo.tools.utils.TextUtil;
 
 import java.util.Collections;
@@ -38,9 +38,9 @@ public class ChatCommand extends CommandAPI {
             new ChatMenu().openChatMenu(player);
         } else if (args.length == 1) {
             switch (args[0].toLowerCase()) {
-                case "on", "wlacz" -> getInstance().getChatFactory().changeChatStatus(sender, true);
-                case "off", "wylacz" -> getInstance().getChatFactory().changeChatStatus(sender, false);
-                case "clear", "wyczysc" -> getInstance().getChatFactory().clearChat(sender);
+                case "on", "wlacz" -> getInstance().getChatController().changeChatStatus(sender, true);
+                case "off", "wylacz" -> getInstance().getChatController().changeChatStatus(sender, false);
+                case "clear", "wyczysc" -> getInstance().getChatController().clearChat(sender);
 
                 default -> sendUsage((Player) sender);
             }
@@ -57,20 +57,17 @@ public class ChatCommand extends CommandAPI {
                 return;
             }
 
-            User user = getUserRepository().findUser(target.getUniqueId());
-            if(user == null) return;
+            UserService.getInstance().get(player.getUniqueId()).ifPresent(user -> {
+                if(user.getMessages() == null || user.getMessages().isEmpty()) {
+                    getMessageConfiguration()
+                            .getMessageHistoryIsEmpty()
+                            .send(player);
+                    return;
+                }
 
-            if(user.getMessages() == null || user.getMessages().isEmpty()) {
-                getMessageConfiguration()
-                        .getMessageHistoryIsEmpty()
-                        .send(player);
-                return;
-            }
-
-            new MessageHistoryMenu().openMessageHistoryMenu(player, target);
+                new MessageHistoryMenu().openMessageHistoryMenu(player, target);
+            });
         }
-
-
     }
 
     @Override

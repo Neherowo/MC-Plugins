@@ -1,6 +1,7 @@
 name: MC-Tools
 main: pl.nehorowo.tools.ToolsPlugin
 version: '${project.version}'
+description: dzk snox ja fan
 author: nehorowo
 api-version: 1.13
 depend:

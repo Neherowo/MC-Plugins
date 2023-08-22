@@ -47,7 +47,7 @@ public class AWalletCommand extends CommandAPI {
             case "add", "dodaj" -> {
                 UserService.getInstance().get(target.getUniqueId()).ifPresent(user -> {
                     user.setMoney(user.getMoney() + amount);
-//                    new UserController(target.getUniqueId()).update();
+                    new UserController(target.getUniqueId()).update();
                 });
 
                 getMessageConfiguration()

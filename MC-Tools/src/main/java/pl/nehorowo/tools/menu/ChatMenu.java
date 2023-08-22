@@ -6,7 +6,6 @@ import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.utils.ItemBuilder;
 import pl.nehorowo.tools.utils.TextUtil;
@@ -23,7 +22,7 @@ public class ChatMenu implements InventoryProvider {
                                 .build(),
                         false,
                         e -> {
-                            plugin.getChatFactory().changeChatStatus(player, true);
+                            plugin.getChatController().changeChatStatus(player, true);
                             player.closeInventory();
                         })
         );
@@ -34,7 +33,7 @@ public class ChatMenu implements InventoryProvider {
                                 .build(),
                         false,
                         e -> {
-                            plugin.getChatFactory().clearChat(player);
+                            plugin.getChatController().clearChat(player);
                             player.closeInventory();
                         })
         );
@@ -45,7 +44,7 @@ public class ChatMenu implements InventoryProvider {
                                 .build(),
                         false,
                         e -> {
-                            plugin.getChatFactory().changeChatStatus(player, false);
+                            plugin.getChatController().changeChatStatus(player, false);
                             player.closeInventory();
                         })
         );

@@ -7,6 +7,7 @@ import fr.minuskube.inv.content.InventoryProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.nehorowo.tools.ToolsPlugin;
+import pl.nehorowo.tools.service.UserService;
 import pl.nehorowo.tools.user.User;
 import pl.nehorowo.tools.utils.ItemBuilder;
 import pl.nehorowo.tools.utils.RandomUtil;
@@ -25,18 +26,17 @@ public class MessageHistoryMenu implements InventoryProvider {
         String targetName = split[3];
 
         Player target = Bukkit.getPlayer(targetName);
-        User user = plugin.getUserFactory().findUser(target.getUniqueId());
-        if(user == null) return;
-
-        user.getMessages().forEach(messages ->
-                contents.add(ClickableItem.of(new ItemBuilder(plugin.getConfiguration().getItemMessageHistoryType(), 1)
-                    .setName(plugin.getConfiguration().getMessageHistoryMenuTitle().replace("[PLAYER]", targetName))
-                    .addLore(plugin.getConfiguration().getMessageHistoryMenuLore())
-                                        .addLorePlaceholder("[MESSAGE]", messages)
-                                .build(),
-                    false,
-                    e -> player.closeInventory()
-        )));
+        UserService.getInstance().get(target.getUniqueId()).ifPresent(user -> {
+            user.getMessages().forEach(messages ->
+                    contents.add(ClickableItem.of(new ItemBuilder(plugin.getConfiguration().getItemMessageHistoryType(), 1)
+                                    .setName(plugin.getConfiguration().getMessageHistoryMenuTitle().replace("[PLAYER]", targetName))
+                                    .addLore(plugin.getConfiguration().getMessageHistoryMenuLore())
+                                    .addLorePlaceholder("[MESSAGE]", messages)
+                                    .build(),
+                            false,
+                            e -> player.closeInventory()
+                    )));
+        });
     }
 
     public void openMessageHistoryMenu(Player player, Player target) {

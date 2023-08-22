@@ -12,14 +12,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.nehorowo.tools.command.*;
 import pl.nehorowo.tools.configuration.Configuration;
 import pl.nehorowo.tools.configuration.MessageConfiguration;
-import pl.nehorowo.tools.factory.*;
+import pl.nehorowo.tools.database.DatabaseConfiguration;
+import pl.nehorowo.tools.database.DatabaseConnector;
+import pl.nehorowo.tools.database.serializer.UUIDSerializer;
+import pl.nehorowo.tools.database.serializer.UserControllerSerializer;
+import pl.nehorowo.tools.controller.*;
 import pl.nehorowo.tools.listener.*;
 import pl.nehorowo.tools.notice.NoticeSerializer;
+import pl.nehorowo.tools.service.UserService;
 import pl.nehorowo.tools.task.*;
-import pl.nehorowo.tools.utils.TextUtil;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -28,48 +31,30 @@ public final class ToolsPlugin extends JavaPlugin {
     // singleton(s)
     @Getter private static ToolsPlugin instance;
 
-    private TeleportFactory teleportFactory;
-    private UserFactory userFactory;
-    private CombatFactory combatFactory;
-    private ChatFactory chatFactory;
-    private ChatBubbleFactory chatBubbleFactory;
-    private BanFactory banFactory;
+    private TeleportController teleportController;
+    private CombatController combatController;
+    private ChatController chatController;
+    private ChatBubbleController chatBubbleController;
 
     // configuration files
     private Configuration configuration;
     private MessageConfiguration messageConfiguration;
 
     @Getter private static InventoryManager invManager;
+    private DatabaseConnector connector;
 
     @Override
     public void onLoad() {
         instance = this;
 
-        teleportFactory = new TeleportFactory();
-        userFactory = new UserFactory();
-        combatFactory = new CombatFactory();
-        chatFactory = new ChatFactory();
-        chatBubbleFactory = new ChatBubbleFactory();
-        banFactory = new BanFactory();
+        teleportController = new TeleportController();
+        combatController = new CombatController();
+        chatController = new ChatController();
+        chatBubbleController = new ChatBubbleController();
     }
 
     @Override
     public void onEnable() {
-        long startupTime = System.currentTimeMillis();
-
-//        TextUtil.sendLogger("&8-------------------------------------------");
-//        TextUtil.sendLogger(" ");
-//        TextUtil.sendLogger("___  ________     _____           _    ");
-//        TextUtil.sendLogger("|  \\/  /  __ \\   |_   _|         | |   ");
-//        TextUtil.sendLogger("| .  . | /  \\/_____| | ___   ___ | |___");
-//        TextUtil.sendLogger("| |\\/| | |  |______| |/ _ \\ / _ \\| / __|");
-//        TextUtil.sendLogger("| |  | | \\__/\\     | | (_) | (_) | \\__ \\");
-//        TextUtil.sendLogger("\\_|  |_/\\____/     \\_/\\___/ \\___/|_|___/");
-//        TextUtil.sendLogger(" ");
-//        TextUtil.sendLogger(" &8** &fLoading NTools by &eNehorowo...");
-//        TextUtil.sendLogger(" &8** &fVersion: &e" + getDescription().getVersion());
-//        TextUtil.sendLogger(" ");
-//        TextUtil.sendLogger(" &8** &fLoading configuration files...");
         configuration = ConfigManager.create(Configuration.class, it -> {
             it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
             it.withBindFile(this.getDataFolder() + "/configuration.yml");
@@ -77,7 +62,6 @@ public final class ToolsPlugin extends JavaPlugin {
             it.saveDefaults();
             it.load(true);
         });
-//        TextUtil.sendLogger(" &8** &aSuccessfully loaded file: &2configuration.yml");
 
         messageConfiguration = ConfigManager.create(MessageConfiguration.class, it -> {
             it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
@@ -87,38 +71,31 @@ public final class ToolsPlugin extends JavaPlugin {
             it.saveDefaults();
             it.load(true);
         });
-//        TextUtil.sendLogger(" &8** &aSuccessfully loaded file: &2messages.yml");
-//
-//        TextUtil.sendLogger(" &8** &fImplementing chat bubbles...");
-//        if(!Bukkit.getPluginManager().isPluginEnabled("DecentHolograms")) {
-//            TextUtil.sendLogger(" &8• &cDecentHolograms is not installed!");
-//            Bukkit.getPluginManager().disablePlugin(this);
-//            return;
-//        }
-//        TextUtil.sendLogger(" &8** &aImplemented chat bubbles!");
 
-        // registering commands, listeners, tasks
-//        TextUtil.sendLogger(" &8** &fLoading commands...");
+        connector = new DatabaseConnector(new DatabaseConfiguration(
+                getConfiguration().getHost(),
+                getConfiguration().getUsername(),
+                getConfiguration().getPassword(),
+                getConfiguration().getDatabase(),
+                getConfiguration().getPort(),
+                getConfiguration().isSsl()
+        ));
+
+        connector.registerSerializer(new UserControllerSerializer());
+        connector.registerSerializer(new UUIDSerializer());
+        connector.registerDataObjectToScan(UserController.class);
+
+        connector.getScanner(UserController.class)
+                .ifPresent(userControllerDataObjectScanner ->
+                        userControllerDataObjectScanner.load(UserService.getInstance())
+                );
+
         registerCommands();
-//        TextUtil.sendLogger(" &8** &aLoaded commands!");
-
-//        TextUtil.sendLogger(" &8** &fLoading listeners...");
         registerListeners();
-//        TextUtil.sendLogger(" &8** &aLoaded listeners!");
-
-//        TextUtil.sendLogger(" &8** &fLoading tasks...");
         registerTasks();
-//        TextUtil.sendLogger(" &8** &aLoaded tasks!");
 
-        // initializing menu(s)
-//        TextUtil.sendLogger(" &8** &fLoading inventories...");
         invManager = new InventoryManager(this);
         invManager.init();
-//        TextUtil.sendLogger(" &8** &aLoaded inventories!");
-
-//        TextUtil.sendLogger(" ");
-//        TextUtil.sendLogger(" &aPlugin have been loaded in &2" + (System.currentTimeMillis() - startupTime) + "ms!");
-//        TextUtil.sendLogger("&8-------------------------------------------");
     }
 
 
@@ -156,7 +133,6 @@ public final class ToolsPlugin extends JavaPlugin {
 
                 new CheckCommand(),
 
-//                new BanCommand(),
                 new KickCommand()
         ).forEach(commands ->
                 commandMap.register("tools", commands)
@@ -168,7 +144,6 @@ public final class ToolsPlugin extends JavaPlugin {
         new CombatListener(this);
         new ChatListener(this);
         new MoveListener(this);
-        new LoginListener(this);
     }
 
     private void registerTasks() {

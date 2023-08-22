@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/MC-Plugins.iml" filepath="$PROJECT_DIR$/MC-Plugins.iml" />
       <module fileurl="file://$PROJECT_DIR$/MC-Rtp/MC-Rtp.iml" filepath="$PROJECT_DIR$/MC-Rtp/MC-Rtp.iml" />
       <module fileurl="file://$PROJECT_DIR$/MC-Tools/MC-Tools.iml" filepath="$PROJECT_DIR$/MC-Tools/MC-Tools.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MC-TreasureMap/MC-TreasureMap.iml" filepath="$PROJECT_DIR$/MC-TreasureMap/MC-TreasureMap.iml" />
       <module fileurl="file://$PROJECT_DIR$/MC-Vanish/MC-Vanish.iml" filepath="$PROJECT_DIR$/MC-Vanish/MC-Vanish.iml" />
       <module fileurl="file://$PROJECT_DIR$/MC-MySQL/MC-Wallet.iml" filepath="$PROJECT_DIR$/MC-MySQL/MC-Wallet.iml" />
     </modules>

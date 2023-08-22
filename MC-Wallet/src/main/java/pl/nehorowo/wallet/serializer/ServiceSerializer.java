@@ -16,7 +16,7 @@ public class ServiceSerializer implements ObjectSerializer<Service> {
     public void serialize(@NonNull Service object, @NonNull SerializationData data, @NonNull GenericsDeclaration generics) {
         data.add("item", object.getItem());
         data.add("slot", object.getSlot());
-        data.add("price", object.getPrize());
+        data.add("price", object.getPrice());
         data.add("command", object.getCommand());
     }
 

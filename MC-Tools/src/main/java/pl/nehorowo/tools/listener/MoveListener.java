@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import pl.nehorowo.tools.ToolsPlugin;
+import pl.nehorowo.tools.controller.UserController;
+import pl.nehorowo.tools.service.UserService;
 import pl.nehorowo.tools.user.User;
 
 public record MoveListener(ToolsPlugin plugin) implements Listener {
@@ -25,13 +27,11 @@ public record MoveListener(ToolsPlugin plugin) implements Listener {
         if (from.getBlockX() == to.getBlockX() && from.getBlockY() == to.getBlockY() && from.getBlockZ() == to.getBlockZ()) return;
 
         Player player = event.getPlayer();
-        User user = plugin.getUserFactory().findUser(player.getUniqueId());
-
-        handeChatBubble(user, player, to);
+        UserService.getInstance().get(player.getUniqueId()).ifPresent(user -> handeChatBubble(user, player, to));
     }
 
 
-    public static void handeChatBubble(User user, Player p, Location to) {
+    public static void handeChatBubble(UserController user, Player p, Location to) {
         if (user.getChatBubble() != null) {
             String holoName = "chat-bubble-" + p.getName();
             Location clone = to.clone();
@@ -39,7 +39,7 @@ public record MoveListener(ToolsPlugin plugin) implements Listener {
 
             Hologram hologram = DHAPI.getHologram(holoName);
             if (hologram != null) DHAPI.moveHologram(hologram, clone);
-            else ToolsPlugin.getInstance().getChatBubbleFactory().createHolo(user.getChatBubble().getText(), to, user);
+            else ToolsPlugin.getInstance().getChatBubbleController().createHolo(user.getChatBubble().getText(), to, user);
         }
     }
 }

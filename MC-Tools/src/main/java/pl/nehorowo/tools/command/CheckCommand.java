@@ -1,6 +1,7 @@
 package pl.nehorowo.tools.command;
 
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.util.concurrent.ServiceManager;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.command.api.CommandAPI;
+import pl.nehorowo.tools.service.UserService;
 import pl.nehorowo.tools.user.User;
 import pl.nehorowo.tools.utils.TextUtil;
 
@@ -48,58 +50,59 @@ public class CheckCommand extends CommandAPI {
                     .send(player);
             return;
         }
-        User user = getUserRepository().findUser(target.getUniqueId());
-        if(user == null) return;
+        UserService.getInstance().get(target.getUniqueId()).ifPresent(user -> {
+            switch (args[0].toLowerCase()) {
+                case "check", "sprawdz" -> {
+                    if(user.getCheck().isChecked()) {
+                        getMessageConfiguration()
+                                .getAlreadyChecked()
+                                .send(player);
+                        return;
+                    }
 
-        switch (args[0].toLowerCase()) {
-            case "check", "sprawdz" -> {
-                if(user.getCheck().isChecked()) {
-                    getMessageConfiguration()
-                            .getAlreadyChecked()
-                            .send(player);
-                    return;
+                    user.getCheck().setChecked(true);
+                    user.getCheck().setPlayerLocation(target.getLocation());
+
+                    player.teleportAsync(getConfiguration().getCheckLocation());
                 }
 
-                user.getCheck().setChecked(true);
-                user.getCheck().setPlayerLocation(target.getLocation());
 
-                player.teleportAsync(getConfiguration().getCheckLocation());
+                case "clear", "czysty" -> {
+                    if(!user.getCheck().isChecked()) {
+                        getMessageConfiguration()
+                                .getNotChecked()
+                                .send(player);
+                        return;
+                    }
+
+                    player.teleportAsync(user.getCheck().getPlayerLocation());
+
+                    user.getCheck().setChecked(false);
+                    user.getCheck().setPlayerLocation(null);
+                }
+
+                case "ban", "cheater" -> {
+                    if(!user.getCheck().isChecked()) {
+                        getMessageConfiguration()
+                                .getNotChecked()
+                                .send(player);
+                        return;
+                    }
+
+                    user.getCheck().setChecked(false);
+                    user.getCheck().setPlayerLocation(null);
+                    Bukkit.dispatchCommand(
+                            Bukkit.getConsoleSender(),
+                            getConfiguration().getBanCommand()
+                                    .replace("[PLAYER]", target.getName())
+                    );
+                }
+
+                default -> sendUsage((Player) sender);
             }
+        });
 
 
-            case "clear", "czysty" -> {
-                if(!user.getCheck().isChecked()) {
-                    getMessageConfiguration()
-                            .getNotChecked()
-                            .send(player);
-                    return;
-                }
-
-                player.teleportAsync(user.getCheck().getPlayerLocation());
-
-                user.getCheck().setChecked(false);
-                user.getCheck().setPlayerLocation(null);
-            }
-
-            case "ban", "cheater" -> {
-                if(!user.getCheck().isChecked()) {
-                    getMessageConfiguration()
-                            .getNotChecked()
-                            .send(player);
-                    return;
-                }
-
-                user.getCheck().setChecked(false);
-                user.getCheck().setPlayerLocation(null);
-                Bukkit.dispatchCommand(
-                        Bukkit.getConsoleSender(),
-                        getConfiguration().getBanCommand()
-                                .replace("[PLAYER]", target.getName())
-                );
-             }
-
-            default -> sendUsage((Player) sender);
-        }
     }
 
     @Override

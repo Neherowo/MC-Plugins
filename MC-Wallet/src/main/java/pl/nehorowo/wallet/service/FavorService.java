@@ -5,9 +5,7 @@ import pl.nehorowo.wallet.WalletPlugin;
 import pl.nehorowo.wallet.module.Service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.SortedMap;
 
 
 //ServicesService XDDDDDDDDDDDDDDDDD - ik about Favour is correct but favor is also correct :)

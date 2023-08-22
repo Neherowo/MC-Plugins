@@ -79,7 +79,6 @@
     <modules>
         <module>MC-Rtp</module>
         <module>MC-Tools</module>
-        <module>MC-TreasureMap</module>
         <module>MC-Vanish</module>
 
         <module>MC-Wallet</module>

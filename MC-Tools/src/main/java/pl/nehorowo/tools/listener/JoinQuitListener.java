@@ -5,12 +5,12 @@ import eu.decentsoftware.holograms.api.DHAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pl.nehorowo.tools.ToolsPlugin;
-import pl.nehorowo.tools.factory.UserFactory;
-import pl.nehorowo.tools.user.User;
+import pl.nehorowo.tools.service.UserService;
 
 public record JoinQuitListener(ToolsPlugin plugin) implements Listener {
 
@@ -20,42 +20,47 @@ public record JoinQuitListener(ToolsPlugin plugin) implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        if(plugin.getUserFactory().findUser(player.getUniqueId()) == null) plugin.getUserFactory().createUser(player.getUniqueId());
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void handlePlayerJoinEvent(PlayerJoinEvent event) {
+        UserService.getInstance().compute(event.getPlayer().getUniqueId()).thenAccept(userController -> {
+            userController.setPlayer(event.getPlayer());
+            userController.setName(event.getPlayer().getName());
+
+            //im thinking abt this
+            userController.update();
+        });
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        User user = plugin.getUserFactory().findUser(player.getUniqueId());
-        if (user == null) return;
+        UserService.getInstance().get(event.getPlayer().getUniqueId()).ifPresent(userController -> {
 
-        if(user.getCheck().isChecked()) {
-            Bukkit.dispatchCommand(
-                    Bukkit.getConsoleSender(),
-                    plugin.getConfiguration().getBanLogoutCommand().replace("[PLAYER]", player.getName())
-            );
-        }
+            if (userController.getCheck().isChecked()) {
+                Bukkit.dispatchCommand(
+                        Bukkit.getConsoleSender(),
+                        plugin.getConfiguration().getBanLogoutCommand().replace("[PLAYER]", player.getName())
+                );
+            }
 
-        if(plugin.getCombatFactory().isInCombat(player)) {
-            Bukkit.getOnlinePlayers().forEach(players ->
-                    plugin.getMessageConfiguration()
-                        .getPlayerLoggedWhileCombat()
-                            .addPlaceholder(ImmutableMultimap.of("[PLAYER]", player.getName()))
-                    .send(players)
-            );
+            if (plugin.getCombatController().isInCombat(player)) {
+                Bukkit.getOnlinePlayers().forEach(players ->
+                        plugin.getMessageConfiguration()
+                                .getPlayerLoggedWhileCombat()
+                                .addPlaceholder(ImmutableMultimap.of("[PLAYER]", player.getName()))
+                                .send(players)
+                );
 
-            player.getLocation().getWorld().strikeLightningEffect(player.getLocation());
-            player.setHealth(0);
+                player.getLocation().getWorld().strikeLightningEffect(player.getLocation());
+                player.setHealth(0);
 
-            plugin.getCombatFactory().removeCombat(player);
-        }
+                plugin.getCombatController().removeCombat(player);
+            }
 
-        if(user.getChatBubble() != null) {
-            DHAPI.removeHologram(user.getChatBubble().getId());
-            plugin.getUserFactory().removeUser(player.getUniqueId());
-        }
+            if (userController.getChatBubble() != null) {
+                DHAPI.removeHologram(userController.getChatBubble().getId());
+            }
+            userController.setPlayer(null);
+        });
     }
 }

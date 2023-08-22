@@ -2,16 +2,12 @@ package pl.nehorowo.tools.command;
 
 import com.google.common.collect.ImmutableMultimap;
 import lombok.NonNull;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.command.api.CommandAPI;
-import pl.nehorowo.tools.factory.UserFactory;
-import pl.nehorowo.tools.user.User;
+import pl.nehorowo.tools.service.UserService;
 import pl.nehorowo.tools.utils.TextUtil;
 
 import java.util.Collections;
@@ -37,15 +33,14 @@ public class SocialSpyCommand extends CommandAPI {
             return;
         }
 
-        User user = getUserRepository().findUser(player.getUniqueId());
-        if(user == null) return;
-
-        user.setSocialSpy(!user.isSocialSpy());
-        ToolsPlugin.getInstance().getMessageConfiguration().getMsgSpyToggle()
-                .addPlaceholder(ImmutableMultimap.of(
-                        "[STATUS]", user.isSocialSpy() ? "&aWlaczony" : "&cWylaczony")
-                )
-                .send(player);
+        UserService.getInstance().get(player.getUniqueId()).ifPresent(user -> {
+            user.setSocialSpy(!user.isSocialSpy());
+            ToolsPlugin.getInstance().getMessageConfiguration().getMsgSpyToggle()
+                    .addPlaceholder(ImmutableMultimap.of(
+                            "[STATUS]", user.isSocialSpy() ? "&aWlaczony" : "&cWylaczony")
+                    )
+                    .send(player);
+        });
     }
 
     @Override

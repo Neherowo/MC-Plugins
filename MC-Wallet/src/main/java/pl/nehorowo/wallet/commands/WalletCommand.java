@@ -1,13 +1,12 @@
 package pl.nehorowo.wallet.commands;
 
-import com.google.common.collect.ImmutableMultimap;
 import lombok.NonNull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.nehorowo.wallet.WalletPlugin;
 import pl.nehorowo.wallet.commands.api.CommandAPI;
-import pl.nehorowo.wallet.menu.ServicesMenu;
+import pl.nehorowo.wallet.menu.WalletMenu;
 import pl.nehorowo.wallet.service.UserService;
 import pl.nehorowo.wallet.util.TextUtil;
 
@@ -33,7 +32,7 @@ public class WalletCommand extends CommandAPI {
             return;
         }
 
-        if(args.length == 0) new ServicesMenu().openServicesMenu(player);
+        if(args.length == 0) new WalletMenu().openServicesMenu(player);
         else if(args.length == 1 && args[0].equalsIgnoreCase("balans")) {
             UserService.getInstance().get(player.getUniqueId()).ifPresent(user -> {
                 player.sendMessage(String.valueOf(user.getMoney()));

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.command.api.CommandAPI;
+import pl.nehorowo.tools.service.UserService;
 import pl.nehorowo.tools.user.User;
 
 import java.util.Collections;
@@ -36,44 +37,47 @@ public class ReplyCommand extends CommandAPI {
             return;
         }
 
-        User user = getUserRepository().findUser(player.getUniqueId());
-        if(user == null) return;
+        UserService.getInstance().get(player.getUniqueId()).ifPresent(user -> {
+            if(user.getLastMsg() == null) {
+                ToolsPlugin.getInstance().getMessageConfiguration().getNoLastMsg()
+                        .send(player);
+                return;
+            }
 
-        if(user.getLastMsg() == null) {
-            ToolsPlugin.getInstance().getMessageConfiguration().getNoLastMsg()
-                    .send(player);
+            Player target = user.getLastMsg();
+            String message = String.join(" ", args);
+
+            Bukkit.getOnlinePlayers().forEach(players ->
+                    UserService.getInstance().get(players.getUniqueId()).ifPresent(users -> {
+                        if(users.isSocialSpy()) {
+                            ToolsPlugin.getInstance().getMessageConfiguration().getMsgSpyFormat()
+                                    .addPlaceholder(ImmutableMultimap.of(
+                                            "[MESSAGE]", message,
+                                            "[PLAYER]", sender.getName(),
+                                            "[TARGET]", target.getName()
+                                    ))
+                                    .send(players);
+                        }
+                    }));
+
+            ToolsPlugin.getInstance().getMessageConfiguration().getMsgSenderFormat()
+                    .addPlaceholder(ImmutableMultimap.of(
+                            "[MESSAGE]", message,
+                            "[PLAYER]", target.getName()
+                    ))
+                    .send((Player) sender);
+
+            ToolsPlugin.getInstance().getMessageConfiguration().getMsgTargetFormat()
+                    .addPlaceholder(ImmutableMultimap.of(
+                            "[MESSAGE]", message,
+                            "[PLAYER]", player.getName()
+                    ))
+                    .send(target);
+
             return;
-        }
+        });
 
-        Player target = user.getLastMsg();
-        String message = String.join(" ", args);
 
-        Bukkit.getOnlinePlayers().stream()
-                .filter(players -> getUserRepository().findUser(players.getUniqueId()) != null)
-                .filter(players -> getUserRepository().findUser(players.getUniqueId()).isSocialSpy())
-                .forEach(users ->
-                        ToolsPlugin.getInstance().getMessageConfiguration().getMsgSpyFormat()
-                                .addPlaceholder(ImmutableMultimap.of(
-                                        "[MESSAGE]", message,
-                                        "[PLAYER]", target.getName()
-                                ))
-                                .send(users)
-                );
-        ToolsPlugin.getInstance().getMessageConfiguration().getMsgSenderFormat()
-                .addPlaceholder(ImmutableMultimap.of(
-                        "[MESSAGE]", message,
-                        "[PLAYER]", target.getName()
-                ))
-                .send((Player) sender);
-
-        ToolsPlugin.getInstance().getMessageConfiguration().getMsgTargetFormat()
-                .addPlaceholder(ImmutableMultimap.of(
-                        "[MESSAGE]", message,
-                        "[PLAYER]", player.getName()
-                ))
-                .send(target);
-
-        return;
     }
 
     @Override
