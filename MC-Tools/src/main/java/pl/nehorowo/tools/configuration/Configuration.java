@@ -22,6 +22,7 @@ public class Configuration extends OkaeriConfig {
     private String database = "database";
     private String username = "username";
     private String password = "password";
+    private boolean ssl = false;
     @Comment(" ")
     @Comment("Taki prefix do permisji - np tools. + funkcja, np tools.teleport.vip albo tools.socialspy")
     private String adminPermission = "tools";
