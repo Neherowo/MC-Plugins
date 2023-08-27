@@ -8,9 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.service.UserService;
-import pl.nehorowo.tools.user.User;
 import pl.nehorowo.tools.utils.ItemBuilder;
-import pl.nehorowo.tools.utils.RandomUtil;
 import pl.nehorowo.tools.utils.TextUtil;
 
 public class MessageHistoryMenu implements InventoryProvider {

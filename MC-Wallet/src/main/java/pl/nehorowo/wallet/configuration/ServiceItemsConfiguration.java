@@ -17,21 +17,27 @@ public class ServiceItemsConfiguration extends OkaeriConfig {
     private Set<Service> services = Set.of(
             new Service(
                     new ItemBuilder(Material.GOLD_INGOT, 1)
-                            .setName("&6VIP")
-                            .addLore(Arrays.asList("&7Kliknij tutaj, aby zakupić range &evip&f za nasza walute!", "&7Koszt: &e10 wPLN"))
+                            .setName("&eVIP")
+                            .addLore(Arrays.asList(
+                                    " &8** &fKliknij tutaj, aby zakupić rangę &eVIP!",
+                                    " &8** &fTa ranga kosztuje &e20 wPLN, które zakupisz w naszym itemshopie!"
+                            ))
                             .build(),
-                    13,
                     10,
-                    "pex user [PLAYER] group set vip"
+                    20,
+                    "say [PLAYER] zakupił vipa!"
                 ),
             new Service(
-                    new ItemBuilder(Material.GOLD_INGOT, 2)
+                    new ItemBuilder(Material.DIAMOND, 1)
                             .setName("&6SVIP")
-                            .addLore(Arrays.asList("&7Kliknij tutaj, aby zakupić range &eSvip&f za nasza walute!", "&7Koszt: &e10 wPLN"))
+                            .addLore(Arrays.asList(
+                                    " &8** &fKliknij tutaj, aby zakupić rangę &e6SVIP!",
+                                    " &8** &fTa ranga kosztuje &e30 wPLN, które zakupisz w naszym itemshopie!"
+                            ))
                             .build(),
-                    15,
-                    10,
-                    "pex user [PLAYER] group set svip"
+                    11,
+                    30,
+                    "say [PLAYER] zakupił svipa!"
             )
         );
 

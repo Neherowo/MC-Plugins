@@ -8,7 +8,6 @@ import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.nehorowo.vanish.command.TestCommand;
 import pl.nehorowo.vanish.command.VanishCommand;
 import pl.nehorowo.vanish.configuration.Configuration;
 import pl.nehorowo.vanish.configuration.MessageConfiguration;
@@ -69,8 +68,7 @@ public class VanishPlugin extends JavaPlugin {
         final CommandMap commandMap = (CommandMap) bukkitCommandMap.get(getServer());
 
         List.of(
-                new VanishCommand(),
-                new TestCommand()
+                new VanishCommand()
         ).forEach(commands ->
                 commandMap.register("tools", commands)
         );

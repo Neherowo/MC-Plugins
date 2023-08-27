@@ -2,21 +2,17 @@ package pl.nehorowo.tools.command;
 
 import com.google.common.collect.ImmutableMultimap;
 import lombok.NonNull;
-import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.command.api.CommandAPI;
-import pl.nehorowo.tools.user.User;
 import pl.nehorowo.tools.utils.TextUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class KickCommand extends CommandAPI {
 

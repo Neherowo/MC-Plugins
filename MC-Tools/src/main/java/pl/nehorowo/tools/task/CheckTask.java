@@ -3,7 +3,6 @@ package pl.nehorowo.tools.task;
 import org.bukkit.Bukkit;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.service.UserService;
-import pl.nehorowo.tools.user.User;
 import pl.nehorowo.tools.utils.TextUtil;
 
 public record CheckTask(ToolsPlugin plugin) implements Runnable {

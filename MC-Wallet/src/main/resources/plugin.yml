@@ -1,4 +1,5 @@
-name: MC-Wallet
+name: KWallet
 version: 1.0
 main: pl.nehorowo.wallet.WalletPlugin
 author: nehorowo
+api-version: 1.13

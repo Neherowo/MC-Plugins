@@ -8,7 +8,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.service.UserService;
-import pl.nehorowo.tools.user.User;
 import pl.nehorowo.tools.utils.TimeUtil;
 
 public record ChatListener(ToolsPlugin plugin) implements Listener {

@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/MC-Tools/MC-Tools.iml" filepath="$PROJECT_DIR$/MC-Tools/MC-Tools.iml" />
       <module fileurl="file://$PROJECT_DIR$/MC-Vanish/MC-Vanish.iml" filepath="$PROJECT_DIR$/MC-Vanish/MC-Vanish.iml" />
       <module fileurl="file://$PROJECT_DIR$/MC-MySQL/MC-Wallet.iml" filepath="$PROJECT_DIR$/MC-MySQL/MC-Wallet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MC-Whitelist/MC-Whitelist.iml" filepath="$PROJECT_DIR$/MC-Whitelist/MC-Whitelist.iml" />
     </modules>
   </component>
 </project>

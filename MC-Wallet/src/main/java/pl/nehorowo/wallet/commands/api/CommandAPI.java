@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import pl.nehorowo.wallet.WalletPlugin;
 import pl.nehorowo.wallet.configuration.Configuration;
 import pl.nehorowo.wallet.configuration.MessageConfiguration;
+import pl.nehorowo.wallet.configuration.ServiceItemsConfiguration;
 import pl.nehorowo.wallet.util.TextUtil;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public abstract class CommandAPI extends BukkitCommand {
     private final WalletPlugin instance = WalletPlugin.getInstance();
     private final Configuration configuration = instance.getConfiguration();
     private final MessageConfiguration messageConfiguration = instance.getMessageConfiguration();
+    private final ServiceItemsConfiguration serviceItemsConfiguration = instance.getItemsConfiguration();
 
     @SneakyThrows
     public CommandAPI(@NotNull String name, String permission, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {

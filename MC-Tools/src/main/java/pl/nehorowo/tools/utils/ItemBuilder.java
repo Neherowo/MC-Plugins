@@ -48,19 +48,6 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder setGlowing(boolean t) {
-        if (t) {
-            this.meta.addEnchant(Enchantment.LUCK, 1, true);
-            this.meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            if (this.meta.getEnchants().containsKey(Enchantment.LUCK))
-                this.meta.removeEnchant(Enchantment.LUCK);
-            this.meta.removeItemFlags(
-                    ItemFlag.HIDE_ENCHANTS);
-        }
-        return this;
-    }
-
     public ItemBuilder addLore(String... lore) {
         this.lore.addAll(Arrays.stream(lore).map(TextUtil::fixColor).toList());
         return this;

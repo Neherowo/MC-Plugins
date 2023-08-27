@@ -7,7 +7,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.service.UserService;
-import pl.nehorowo.tools.user.User;
 
 public record CombatListener(ToolsPlugin plugin) implements Listener {
 

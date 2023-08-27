@@ -1,4 +1,4 @@
-name: MC-Tools
+name: KTools
 main: pl.nehorowo.tools.ToolsPlugin
 version: '${project.version}'
 description: dzk snox ja fan

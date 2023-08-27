@@ -10,7 +10,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.controller.UserController;
 import pl.nehorowo.tools.service.UserService;
-import pl.nehorowo.tools.user.User;
 
 public record MoveListener(ToolsPlugin plugin) implements Listener {
 

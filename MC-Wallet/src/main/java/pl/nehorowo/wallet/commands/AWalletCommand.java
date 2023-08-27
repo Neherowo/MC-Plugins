@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import pl.nehorowo.wallet.WalletPlugin;
 import pl.nehorowo.wallet.commands.api.CommandAPI;
 import pl.nehorowo.wallet.controller.UserController;
 import pl.nehorowo.wallet.service.UserService;
@@ -107,6 +108,15 @@ public class AWalletCommand extends CommandAPI {
                                 "[PLAYER]", target.getName()
                         ))
                         .send((Player) sender);
+            }
+
+            case "reload" -> {
+                getMessageConfiguration()
+                        .getReloaded()
+                        .send((Player) sender);
+                getConfiguration().load();
+                getMessageConfiguration().load();
+                getServiceItemsConfiguration().load();
             }
         }
     }

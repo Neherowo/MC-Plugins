@@ -1,5 +1,6 @@
 package pl.nehorowo.wallet.commands;
 
+import com.google.common.collect.ImmutableMultimap;
 import lombok.NonNull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,14 +35,18 @@ public class WalletCommand extends CommandAPI {
 
         if(args.length == 0) new WalletMenu().openServicesMenu(player);
         else if(args.length == 1 && args[0].equalsIgnoreCase("balans")) {
-            UserService.getInstance().get(player.getUniqueId()).ifPresent(user -> {
-                player.sendMessage(String.valueOf(user.getMoney()));
-            });
+            UserService.getInstance().get(player.getUniqueId()).ifPresent(user ->
+                    getMessageConfiguration()
+                            .getYouHave()
+                            .addPlaceholder(ImmutableMultimap.of("[MONEY]", user.getMoney()))
+                            .send(player)
+            );
         }
     }
 
     @Override
     public List<String> tab(@NonNull Player player, @NotNull @NonNull String[] args) {
+        if(args.length == 1) return Arrays.asList("balans");
         return null;
     }
 }

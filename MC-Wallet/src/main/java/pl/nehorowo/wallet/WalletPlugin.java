@@ -45,27 +45,12 @@ public class WalletPlugin extends JavaPlugin {
     private InventoryManager inventoryManager;
 
     @Override
-    public void onEnable() {
+    public void onLoad() {
         instance = this;
+    }
 
-        connector = new DatabaseConnector(new DatabaseConfiguration(
-                "54.38.50.59",
-                "www11506_megadrop",
-                "t4J9WCon4mgQqcGWZBe3",
-                "www11506_megadrop",
-                3306,
-                true
-        ));
-
-        connector.registerSerializer(new UserControllerSerializer());
-        connector.registerSerializer(new UUIDSerializer());
-        connector.registerDataObjectToScan(UserController.class);
-
-        connector.getScanner(UserController.class)
-                .ifPresent(userControllerDataObjectScanner ->
-                    userControllerDataObjectScanner.load(UserService.getInstance())
-        );
-
+    @Override
+    public void onEnable() {
         configuration = ConfigManager.create(Configuration.class, it -> {
             it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
             it.withBindFile(this.getDataFolder() + "/configuration.yml");
@@ -91,6 +76,24 @@ public class WalletPlugin extends JavaPlugin {
             it.saveDefaults();
             it.load(true);
         });
+
+        connector = new DatabaseConnector(new DatabaseConfiguration(
+                getConfiguration().getHost(),
+                getConfiguration().getUsername(),
+                getConfiguration().getPassword(),
+                getConfiguration().getDatabase(),
+                getConfiguration().getPort(),
+                getConfiguration().isSsl()
+        ));
+
+        connector.registerSerializer(new UserControllerSerializer());
+        connector.registerSerializer(new UUIDSerializer());
+        connector.registerDataObjectToScan(UserController.class);
+
+        connector.getScanner(UserController.class)
+                .ifPresent(userControllerDataObjectScanner ->
+                        userControllerDataObjectScanner.load(UserService.getInstance())
+                );
 
         registerCommands();
         registerListeners();

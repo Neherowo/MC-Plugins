@@ -1,5 +1,6 @@
 package pl.nehorowo.wallet.menu;
 
+import com.google.common.collect.ImmutableMultimap;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
@@ -35,6 +36,17 @@ public class WalletMenu implements InventoryProvider {
                     }
                 });
             }));
+
+            contents.set(
+                    SlotUtil.calcSpace(WalletPlugin.getInstance().getConfiguration().getInfoItemSlot()),
+                    ClickableItem.of(WalletPlugin.getInstance().getConfiguration().getInfoItem(), false, event -> {
+                        player.closeInventory();
+                        WalletPlugin.getInstance().getMessageConfiguration()
+                                .getYouHave()
+                                .addPlaceholder(ImmutableMultimap.of("[MONEY]", UserService.getInstance().get(player.getUniqueId()).get().getMoney()))
+                                .send(player);
+                    })
+            );
         });
     }
 

@@ -2,6 +2,7 @@ package pl.nehorowo.wallet.task;
 
 import org.bukkit.Bukkit;
 import pl.nehorowo.wallet.controller.UserController;
+import pl.nehorowo.wallet.service.UserService;
 
 public class UpdateTask implements Runnable {
 

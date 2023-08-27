@@ -1,17 +1,14 @@
 package pl.nehorowo.tools.command;
 
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.util.concurrent.ServiceManager;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.command.api.CommandAPI;
 import pl.nehorowo.tools.service.UserService;
-import pl.nehorowo.tools.user.User;
 import pl.nehorowo.tools.utils.TextUtil;
 
 import java.util.Collections;

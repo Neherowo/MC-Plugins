@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import pl.nehorowo.tools.ToolsPlugin;
 import pl.nehorowo.tools.command.api.CommandAPI;
 import pl.nehorowo.tools.service.UserService;
-import pl.nehorowo.tools.user.User;
 
 import java.util.Collections;
 import java.util.List;

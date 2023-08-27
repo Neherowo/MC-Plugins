@@ -11,5 +11,4 @@ public class Teleport {
     private Location from;
     private Location to;
 
-
 }
