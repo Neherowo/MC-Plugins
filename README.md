@@ -10,7 +10,9 @@
 - **[MC-Vanish](https://github.com/Neherowo/MC-Plugins/tree/master/MC-Vanish)**
     - 🌟 Simple vanish plugin for Minecraft
 - **[MC-Wallet](https://github.com/Neherowo/MC-Plugins/tree/master/MC-Wallet)**
-    - 🌟 Advanced plugin for wallet in GUI - fully configurable.
+    - 🌟 Advanced wallet plugin in GUI - fully configurable services and messages.
+- **[MC-Whitelist](https://github.com/Neherowo/MC-Plugins/tree/master/MC-Whitelist)**
+  - 🌟 Advanced whitelist plugin in GUI.
 
 ## Supported platforms 🌼
 

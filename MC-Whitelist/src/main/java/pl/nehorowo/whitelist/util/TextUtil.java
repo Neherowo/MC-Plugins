@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,10 +27,10 @@ public class TextUtil {
                 .replace("**", "•");
     }
 
-//    public static List<String> fixColor(List<String> list) {
-//        return list.stream().map(TextUtil::fixColor)
-//                .toList();
-//    }
+    public static List<String> fixColor(List<String> list) {
+        return list.stream().map(TextUtil::fixColor)
+                .toList();
+    }
 
 //    public static List<String> fixColor(List<String> list, ImmutableMultimap<Object, Object> placeholders) {
 //        return list.stream().map(TextUtil::fixColor)
