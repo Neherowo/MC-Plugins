@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.nehorowo.wallet.commands.AWalletCommand;
 import pl.nehorowo.wallet.commands.WalletCommand;
@@ -21,6 +22,7 @@ import pl.nehorowo.wallet.database.serializer.UUIDSerializer;
 import pl.nehorowo.wallet.database.serializer.UserControllerSerializer;
 import pl.nehorowo.wallet.listener.JoinQuitListener;
 import pl.nehorowo.wallet.notice.NoticeSerializer;
+import pl.nehorowo.wallet.placeholder.Placeholder;
 import pl.nehorowo.wallet.serializer.ServiceSerializer;
 import pl.nehorowo.wallet.service.FavorService;
 import pl.nehorowo.wallet.service.UserService;
@@ -51,31 +53,7 @@ public class WalletPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        configuration = ConfigManager.create(Configuration.class, it -> {
-            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
-            it.withBindFile(this.getDataFolder() + "/configuration.yml");
-            it.withRemoveOrphans(true);
-            it.saveDefaults();
-            it.load(true);
-        });
-
-        messageConfiguration = ConfigManager.create(MessageConfiguration.class, it -> {
-            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
-            it.withBindFile(this.getDataFolder() + "/messages.yml");
-            it.withSerdesPack(registry -> registry.register(new NoticeSerializer()));
-            it.withRemoveOrphans(true);
-            it.saveDefaults();
-            it.load(true);
-        });
-
-        itemsConfiguration = ConfigManager.create(ServiceItemsConfiguration.class, it -> {
-            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
-            it.withBindFile(this.getDataFolder() + "/services.yml");
-            it.withSerdesPack(registry -> registry.register(new ServiceSerializer()));
-            it.withRemoveOrphans(true);
-            it.saveDefaults();
-            it.load(true);
-        });
+        registerConfiguration();
 
         connector = new DatabaseConnector(new DatabaseConfiguration(
                 getConfiguration().getHost(),
@@ -99,6 +77,8 @@ public class WalletPlugin extends JavaPlugin {
         registerListeners();
         registerTasks();
 
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) new Placeholder().register();
+
         inventoryManager = new InventoryManager(this);
         inventoryManager.init();
 
@@ -110,6 +90,9 @@ public class WalletPlugin extends JavaPlugin {
     public void onDisable() {
         if(connector.getConnection() != null) connector.getConnection().close();
 
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) new Placeholder().unregister();
+        HandlerList.unregisterAll(this);
+        Bukkit.getScheduler().cancelTasks(this);
 
         Bukkit.getOnlinePlayers().forEach(player ->
           UserService.getInstance().get(player.getUniqueId()).ifPresent(userController -> {
@@ -125,6 +108,10 @@ public class WalletPlugin extends JavaPlugin {
         itemsConfiguration.getServices().addAll(FavorService.getInstance().getServiceSet());
         itemsConfiguration.save();
     }
+
+    /*
+        Registering listeners, commands, tasks and configuration
+     */
 
     private void registerListeners() {
         List.of(
@@ -152,5 +139,33 @@ public class WalletPlugin extends JavaPlugin {
         ).forEach(task ->
                 Bukkit.getScheduler().runTaskTimerAsynchronously(this, task, 20L, 20L * 60L) //
         );
+    }
+
+    private void registerConfiguration() {
+        configuration = ConfigManager.create(Configuration.class, it -> {
+            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
+            it.withBindFile(this.getDataFolder() + "/configuration.yml");
+            it.withRemoveOrphans(true);
+            it.saveDefaults();
+            it.load(true);
+        });
+
+        messageConfiguration = ConfigManager.create(MessageConfiguration.class, it -> {
+            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
+            it.withBindFile(this.getDataFolder() + "/messages.yml");
+            it.withSerdesPack(registry -> registry.register(new NoticeSerializer()));
+            it.withRemoveOrphans(true);
+            it.saveDefaults();
+            it.load(true);
+        });
+
+        itemsConfiguration = ConfigManager.create(ServiceItemsConfiguration.class, it -> {
+            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
+            it.withBindFile(this.getDataFolder() + "/services.yml");
+            it.withSerdesPack(registry -> registry.register(new ServiceSerializer()));
+            it.withRemoveOrphans(true);
+            it.saveDefaults();
+            it.load(true);
+        });
     }
 }

@@ -18,7 +18,7 @@ public class WhitelistMenu implements InventoryProvider {
     public void init(Player player, InventoryContents contents) {
         System.out.println("init");
 
-        WhitelistService.getInstance().getWhitelistSet().forEach(mess -> System.out.println(mess));
+        WhitelistService.getInstance().getWhitelistSet().forEach(System.out::println);
 
         WhitelistService.getInstance().getWhitelistSet().forEach(name -> {
             contents.add(ClickableItem.of(
