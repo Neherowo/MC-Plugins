@@ -13,6 +13,8 @@
     - 🌟 Advanced wallet plugin in GUI - fully configurable services and messages.
 - **[MC-Whitelist](https://github.com/Neherowo/MC-Plugins/tree/master/MC-Whitelist)**
   - 🌟 Advanced whitelist plugin in GUI.
+- **[MC-DiscordReward](https://github.com/Neherowo/MC-Plugins/tree/master/MC-DiscordReward)**
+  - 🌟 Advanced discord reward plugin for discord. **(Discord bot required)**
 
 ## Supported platforms 🌼
 
