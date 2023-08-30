@@ -57,5 +57,8 @@ public class InteractModalListener extends ListenerAdapter {
 
         RewardPlugin.getInstance().getMessageConfiguration()
             .getYouClaimedReward().send(player);
+        event.reply(RewardPlugin.getInstance().getBotConfiguration().getRewardClaimed())
+                .setEphemeral(true)
+                .queue();
     }
 }

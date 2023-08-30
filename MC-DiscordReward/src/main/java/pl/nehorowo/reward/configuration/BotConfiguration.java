@@ -21,5 +21,6 @@ public class BotConfiguration extends OkaeriConfig {
 
     private String playerOffline = "Aby odebrac nagrode musisz byc online na serwerze!";
     private String alreadyClaimed = "Nagroda zostala juz odebrana!";
+    private String rewardClaimed = "Nagroda zostala odebrana!";
 
 }
