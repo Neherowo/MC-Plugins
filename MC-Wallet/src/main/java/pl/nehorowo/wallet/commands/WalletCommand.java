@@ -46,7 +46,7 @@ public class WalletCommand extends CommandAPI {
 
     @Override
     public List<String> tab(@NonNull Player player, @NotNull @NonNull String[] args) {
-        if(args.length == 1) return Arrays.asList("balans");
+        if(args.length == 1) return List.of("balans");
         return null;
     }
 }

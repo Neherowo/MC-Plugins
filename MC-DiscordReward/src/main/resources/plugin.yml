@@ -1,0 +1,4 @@
+main: pl.nehorowo.reward.RewardPlugin
+name: MC-DiscordReward
+author: nehorowo
+version: 1.0

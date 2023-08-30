@@ -86,6 +86,8 @@
         <module>MC-Wallet</module>
 
         <module>MC-Whitelist</module>
+
+        <module>MC-DiscordReward</module>
     </modules>
 
 

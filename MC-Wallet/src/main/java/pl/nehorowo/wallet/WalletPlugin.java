@@ -137,7 +137,7 @@ public class WalletPlugin extends JavaPlugin {
         List.of(
                 new UpdateTask()
         ).forEach(task ->
-                Bukkit.getScheduler().runTaskTimerAsynchronously(this, task, 20L, 20L * 60L) //
+                Bukkit.getScheduler().runTaskTimerAsynchronously(this, task, 20L, 20L * 60L) //xpp
         );
     }
 

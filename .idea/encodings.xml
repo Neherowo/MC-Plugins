@@ -3,6 +3,10 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/MC-Api/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MC-Api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MC-DiscordReward/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MC-DiscordReward/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MC-DiscordVerify/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MC-DiscordVerify/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MC-MySQL/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MC-MySQL/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MC-Rtp/src/main/java" charset="UTF-8" />

@@ -8,8 +8,6 @@ public class UpdateTask implements Runnable {
 
     @Override
     public void run() {
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            new UserController(player.getUniqueId()).update();
-        });
+        Bukkit.getOnlinePlayers().forEach(player -> new UserController(player.getUniqueId()).update());
     }
 }

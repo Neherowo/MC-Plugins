@@ -1,16 +1,15 @@
-package pl.nehorowo.tools.database;
+package pl.nehorowo.reward.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import pl.nehorowo.tools.database.api.DataObjectScanner;
-import pl.nehorowo.tools.database.api.ItemSerializer;
+import pl.nehorowo.reward.database.api.DataObjectScanner;
+import pl.nehorowo.reward.database.api.ItemSerializer;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentMap;
 
 public class DatabaseConnector {
 
@@ -66,7 +65,6 @@ public class DatabaseConnector {
                 dataBaseConfiguration.table()));
         hikariConfig.setUsername(dataBaseConfiguration.username());
         hikariConfig.setPassword(dataBaseConfiguration.password());
-        //hikariConfig.addDataSourceProperty("maxLifetime", "60000");
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
         hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");
         hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
@@ -79,6 +77,7 @@ public class DatabaseConnector {
         hikariConfig.addDataSourceProperty("maintainTimeStats", "false");
         hikariConfig.addDataSourceProperty("autoReconnect", "true");
         hikariConfig.addDataSourceProperty("failOverReadOnly", "false");
+
         return hikariConfig;
     }
 

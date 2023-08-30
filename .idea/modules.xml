@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/MC-DiscordReward/MC-DiscordReward.iml" filepath="$PROJECT_DIR$/MC-DiscordReward/MC-DiscordReward.iml" />
       <module fileurl="file://$PROJECT_DIR$/MC-Plugins.iml" filepath="$PROJECT_DIR$/MC-Plugins.iml" />
       <module fileurl="file://$PROJECT_DIR$/MC-Rtp/MC-Rtp.iml" filepath="$PROJECT_DIR$/MC-Rtp/MC-Rtp.iml" />
       <module fileurl="file://$PROJECT_DIR$/MC-Tools/MC-Tools.iml" filepath="$PROJECT_DIR$/MC-Tools/MC-Tools.iml" />
