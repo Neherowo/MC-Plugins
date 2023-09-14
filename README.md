@@ -6,7 +6,7 @@
     - 🌟 Simple random teleport in GUI with safe-location teleport.
 - **[MC-Tools](https://github.com/Neherowo/MC-Plugins/tree/master/MC-Tools)**
     - 🌟 More advanced plugin which contains;
-      - ChatBubbles, Fully configurable messages, Combat System and more commands...
+      - Fully configurable messages, Combat System and more commands & functions...
 - **[MC-Vanish](https://github.com/Neherowo/MC-Plugins/tree/master/MC-Vanish)**
     - 🌟 Simple vanish plugin for Minecraft
 - **[MC-Wallet](https://github.com/Neherowo/MC-Plugins/tree/master/MC-Wallet)**
